@@ -1,7 +1,7 @@
 .countdown-timer {
   width: 600px;
   height: 100px;
-  border: 2px solid black;
+  border: 2px solid rgb(47, 193, 140);
   font-size: 2rem;
   display: flex;
   align-items: center;
