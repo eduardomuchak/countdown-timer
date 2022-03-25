@@ -1,77 +1,62 @@
 import React, { Component } from 'react';
 import './Countdown.css';
+import Minutes from './Minutes';
+import Seconds from './Seconds';
 
 class Countdown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      minutes: 1,
+      minutes: 3,
       seconds: 60,
-      plural: false,
-      minutesIsVisible: false,
     }
   }
 
-  componentDidMount() {
-    this.minutes = setInterval(() => {
-      let { minutes } = this.state;
-      this.setState({
-        minutes: minutes - 1,
-      })
-    }, 60000)
-    this.handlePlural()
-    this.handleVisibleMinutes()
+  // componentDidMount() {
+  //   this.minutes = setInterval(() => {
+  //     let { minutes } = this.state;
+  //     this.setState({
+  //       minutes: minutes - 1,
+  //     })
+  //   }, 3000)
 
-    this.seconds = setInterval(() => {
-      let { seconds } = this.state;
-      this.setState({
-        seconds: seconds - 1,
-      })
-    }, 1000)
-  }
+  //   this.seconds = setInterval(() => {
+  //     let { seconds } = this.state;
+  //     this.setState({
+  //       seconds: seconds - 1,
+  //     })
+  //   }, 1000)
+  // }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if(prevState.minutes !== this.state.minutes && this.state.minutes === 0){
-      clearInterval(this.minutes)
-    }
+  // componentDidUpdate(_prevProps, prevState) {
+  //   if(prevState.minutes !== this.state.minutes && this.state.minutes === 0){
+  //     clearInterval(this.minutes)
+  //   }
     
-    if(prevState.seconds !== this.state.seconds && this.state.seconds === 0){
-      clearInterval(this.seconds)
-      // alert('One day, all your hard work will pay off')
-    }
-  }
-
-  handlePlural = () => {
-    const { minutes } = this.state;
-    if (minutes > 1) {
-      this.setState({ 
-        plural: true,
-      })
-    }
-  }
-
-  handleVisibleMinutes = () => {
-    const { minutes } = this.state;
-    if (minutes >= 1) {
-      this.setState({ 
-        minutesIsVisible: true,
-      })
-    }
-  }
+  //   if(prevState.seconds !== this.state.seconds && this.state.seconds === 0){
+  //     clearInterval(this.seconds)
+  //   }
+  // }
   
-  render() { 
-    const { minutes, seconds, plural, minutesIsVisible } = this.state; 
+  render() {
+    // const {minutes, seconds} = this.state;
     return (
-      <div className="countdown-timer">
-        { minutesIsVisible 
-        ? ( plural 
-            ? <><span className="ms-2">{minutes}</span><span className="ms-2">minutes</span></>
-            : <><span className="ms-2">{minutes}</span><span className="ms-2">minute</span></> 
-          )
-        : <></> }
-        <span className="ms-2">{seconds}</span>
-        <span className="ms-2">seconds</span>
-      </div>
+      <main className='main-content'>
+        <div className="countdown-timer">
+          <Minutes 
+            // minutes={minutes}
+          />
+          <Seconds 
+            // seconds={seconds}
+          />
+        </div>
+        <div className='input-container'>
+          <label>
+            <input type="text" placeholder='Please enter the minutes amount'className="input-content"/>
+          </label>
+          <button className="button-start">Start</button>
+        </div>
+      </main>
     );
   }
 }
