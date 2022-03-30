@@ -12,6 +12,7 @@ class Countdown extends Component {
       minutes: 0,
       seconds: 0,
       count: 0,
+      showInputContainer: true,
     }
   }
 
@@ -26,10 +27,14 @@ class Countdown extends Component {
     const {startCount, downCount} = this.props;
     startCount(minutes);
     this.intervalID = setInterval((downCount),1000);
+    this.setState({
+      showInputContainer: false
+    })
     if(count === 0) clearInterval();
   }
 
   render() {
+    const { showInputContainer } = this.state;
     return (
       <main className='main-content'>
         <div className="countdown-timer">
@@ -37,20 +42,27 @@ class Countdown extends Component {
           <Seconds />
         </div>
         <div className='input-container'>
-          <label>
-            <input 
-              type="text" 
-              placeholder='Please enter the minutes amount'
-              className="input-content"
-              onChange={(event) => this.handleChange(event)}
-            />
-          </label>
-          <button 
-            className="button-start"
-            onClick={this.handleClick}
-          >
-            Start
-          </button>
+          {
+            showInputContainer ? (
+              <>
+                <label>
+                  <input 
+                    type="text" 
+                    placeholder='Please enter the minutes amount'
+                    className="input-content"
+                    onChange={(event) => this.handleChange(event)}
+                  />
+                </label>
+                <button 
+                  className="button-start"
+                  onClick={this.handleClick}
+                >
+                  Start
+                </button>
+              </>
+            )
+            : <></>
+          }
         </div>
       </main>
     );
