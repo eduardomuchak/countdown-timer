@@ -1,28 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Minutes extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { minutes: 2}
-  }
-
-  componentDidMount() {
-    this.minutes = setInterval(() => {
-      let { minutes } = this.state;
-      this.setState({
-        minutes: minutes - 1,
-      })
-    }, 60000)
-  }
-
-  componentDidUpdate(_prevProps, prevState) {
-    if(prevState.minutes !== this.state.minutes && this.state.minutes === 0){
-      clearInterval(this.minutes)
-    }
-  }
   render() { 
-    const {minutes} = this.state;
+    const { minutes } = this.props;
     return (
       <>
       { (minutes > 1 
@@ -37,5 +18,9 @@ class Minutes extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  minutes: state.countDownReducer.minutes,
+})
  
-export default Minutes;
+export default connect(mapStateToProps)(Minutes);

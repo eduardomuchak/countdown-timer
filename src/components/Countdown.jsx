@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { downCount, downCount_Minutes, downCount_Seconds, startCount } from '../redux/actions';
 import './Countdown.css';
 import Minutes from './Minutes';
 import Seconds from './Seconds';
@@ -7,58 +9,59 @@ class Countdown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      minutes: 3,
-      seconds: 60,
+      minutes: 0,
+      seconds: 0,
+      count: 0,
     }
   }
 
-  // componentDidMount() {
-  //   this.minutes = setInterval(() => {
-  //     let { minutes } = this.state;
-  //     this.setState({
-  //       minutes: minutes - 1,
-  //     })
-  //   }, 3000)
+  handleChange = ({target}) => {
+    this.setState({
+      minutes: target.value,
+    })
+  }
 
-  //   this.seconds = setInterval(() => {
-  //     let { seconds } = this.state;
-  //     this.setState({
-  //       seconds: seconds - 1,
-  //     })
-  //   }, 1000)
-  // }
+  handleClick = () => {
+    const { minutes, count } = this.state;
+    const {startCount, downCount} = this.props;
+    startCount(minutes);
+    this.intervalID = setInterval((downCount),1000);
+    if(count === 0) clearInterval();
+  }
 
-  // componentDidUpdate(_prevProps, prevState) {
-  //   if(prevState.minutes !== this.state.minutes && this.state.minutes === 0){
-  //     clearInterval(this.minutes)
-  //   }
-    
-  //   if(prevState.seconds !== this.state.seconds && this.state.seconds === 0){
-  //     clearInterval(this.seconds)
-  //   }
-  // }
-  
   render() {
-    // const {minutes, seconds} = this.state;
     return (
       <main className='main-content'>
         <div className="countdown-timer">
-          <Minutes 
-            // minutes={minutes}
-          />
-          <Seconds 
-            // seconds={seconds}
-          />
+          <Minutes />
+          <Seconds />
         </div>
         <div className='input-container'>
           <label>
-            <input type="text" placeholder='Please enter the minutes amount'className="input-content"/>
+            <input 
+              type="text" 
+              placeholder='Please enter the minutes amount'
+              className="input-content"
+              onChange={(event) => this.handleChange(event)}
+            />
           </label>
-          <button className="button-start">Start</button>
+          <button 
+            className="button-start"
+            onClick={this.handleClick}
+          >
+            Start
+          </button>
         </div>
       </main>
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  startCount: (state) => dispatch(startCount(state)),
+  downCount: (state) => dispatch(downCount(state)),
+  downCount_Seconds: (state) => dispatch(downCount_Seconds(state)),
+  downCount_Minutes: (state) => dispatch(downCount_Minutes(state)),
+})
  
-export default Countdown;
+export default connect(null, mapDispatchToProps)(Countdown);

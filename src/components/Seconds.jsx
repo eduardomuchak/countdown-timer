@@ -1,29 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Seconds extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { seconds: 10}
-  }
-
-  componentDidMount() {
-    this.seconds = setInterval(() => {
-      let { seconds } = this.state;
-      this.setState({
-        seconds: seconds - 1,
-      })
-    }, 1000)
-  }
-  
-  componentDidUpdate(_prevProps, prevState) {  
-    if(prevState.seconds !== this.state.seconds && this.state.seconds === 0){
-      clearInterval(this.seconds)
-    }
-  }
-
   render() { 
-    const {seconds} = this.state;
+    const {seconds} = this.props;
     return (
       <>
       { (seconds > 1 
@@ -35,5 +15,9 @@ class Seconds extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  seconds: state.countDownReducer.seconds,
+})
  
-export default Seconds;
+export default connect(mapStateToProps)(Seconds);
